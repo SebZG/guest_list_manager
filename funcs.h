@@ -3,23 +3,23 @@
 
 #include <stdbool.h>
 
-typedef struct mode
+typedef struct Node
 {
-    char fname[50];
-    char lname[50];
-    bool isConsession;
+    char fName[50];
+    char lName[50];
+    bool isConcession;
     bool hasPaid;
     float amountPaid;
-    struct node *next;
+    struct Node *next;
 } node_t;
 
 node_t *createGuest(float standardPrice, float concessionPrice);
-node_t *addGuestToHead(node_t *head, node_t *newNode);
+node_t *addGuestToHead(node_t *head, node_t *tmp);
 node_t *autoPopList(node_t *head);
 node_t *deleteHead(node_t *head);
 void deleteGuestFromPosition(node_t *head, int pos);
 node_t *deleteGuest(node_t *head);
-void printStats(node_t *head, float standardPrice, float consessionPrice);
-void printAllData(node_t *head, float standardPrice, float consessionPrice);
+void printStats(node_t *head, float standardPrice, float concessionPrice);
+void printAllData(node_t *head, float standardPrice, float concessionPrice);
 
 #endif // FUNCS_H

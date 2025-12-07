@@ -1,0 +1,103 @@
+#include "funcs.h"
+
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef enum MenuOption
+{
+    MENU_ADD_GUEST = 1,
+    MENU_DELETE_GUEST = 2,
+    MENU_PRINT_STATS = 3,
+    MENU_PRINT_ALL = 4,
+    MENU_AUTO_POPULATE = 5,
+    MENU_QUIT = 6
+} MenuOption;
+
+int main(void)
+{
+    node_t *tmp = NULL;
+    node_t *head = NULL;
+
+    float standardPrice = 0.00f;
+    float concessionPrice = 0.00f;
+
+    char c;
+
+    bool validInput = false;
+    do
+    {
+        printf("Set standard price: ");
+        if (scanf("%f", &standardPrice) != 1 || standardPrice < 0)
+        {
+            printf("Invalid input. Please enter a positive amount.\n\n");
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;
+        }
+        else
+        {
+            validInput = true;
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;
+        }
+    } while (!validInput);
+
+    validInput = false;
+    do
+    {
+        printf("Set concession price: ");
+        if (scanf("%f", &concessionPrice) != 1 || concessionPrice < 0)
+        {
+            printf("Invalid input. Please enter a positive amount.\n\n");
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;
+        }
+        else if (concessionPrice >= standardPrice)
+        {
+            printf("Concession price cannot exceed standard price.\n\n");
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;
+        }
+        else
+        {
+            validInput = true;
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;
+        }
+    } while (!validInput);
+
+    while (1)
+    {
+        printf("\n'%d' to: Add a guest", MENU_ADD_GUEST);
+        printf("\n'%d' to: Quit\n", MENU_QUIT);
+
+        int userSelect;
+        if (scanf("%d", &userSelect) != 1)
+        {
+            printf("Please enter a number.\n");
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;
+            continue;
+        }
+
+        switch (userSelect)
+        {
+        case MENU_ADD_GUEST:
+            tmp = createGuest(standardPrice, concessionPrice);
+            head = addGuestToHead(head, tmp);
+            break;
+        case MENU_QUIT:
+            while (head)
+            {
+                node_t *tmp = head;
+                head = head->next;
+                free(tmp);
+            }
+            return 0;
+        default:
+            printf("\nInvalid Seleciton.\n");
+        }
+    }
+
+    return 0;
+}
