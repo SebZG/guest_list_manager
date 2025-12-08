@@ -18,6 +18,6 @@ node_t *addGuestToHead(node_t *head, node_t *tmp);
 node_t *deleteGuest(node_t *head);
 void printStats(node_t *head, float standardPrice, float concessionPrice);
 void printAllData(node_t *head, float standardPrice, float concessionPrice);
-node_t *autoPopList(node_t *head);
+node_t *autoPopList(node_t *head, float standardPrice, float concessionPrice);
 
 #endif // FUNCS_H

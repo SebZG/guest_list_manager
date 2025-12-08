@@ -273,3 +273,71 @@ void printAllData(node_t *head, float standardPrice, float concessionPrice)
     printf("Total EXPECTED: %15.2f\n", totalPaid + totalOwed);
     printf("--------------------------------\n");
 }
+
+node_t *autoPopList(node_t *head, float standardPrice, float concessionPrice)
+{
+    node_t *newGuest;
+    // node_t *tmp = head;
+
+    newGuest = (node_t *)malloc(sizeof(node_t));
+
+    strcpy(newGuest->fName, "fName1");
+    strcpy(newGuest->lName, "lName1");
+    newGuest->isConcession = true;
+    newGuest->hasPaid = true;
+    newGuest->amountPaid = newGuest->isConcession ? concessionPrice : standardPrice;
+    newGuest->next = NULL;
+    head = addGuestToHead(head, newGuest);
+
+    newGuest = (node_t *)malloc(sizeof(node_t));
+
+    strcpy(newGuest->fName, "fName2");
+    strcpy(newGuest->lName, "lName2");
+    newGuest->isConcession = false;
+    newGuest->hasPaid = false;
+    newGuest->amountPaid = 0.00f;
+    newGuest->next = NULL;
+    head = addGuestToHead(head, newGuest);
+
+    newGuest = (node_t *)malloc(sizeof(node_t));
+
+    strcpy(newGuest->fName, "fName3");
+    strcpy(newGuest->lName, "lName3");
+    newGuest->isConcession = false;
+    newGuest->hasPaid = true;
+    newGuest->amountPaid = newGuest->isConcession ? concessionPrice : standardPrice;
+    newGuest->next = NULL;
+    head = addGuestToHead(head, newGuest);
+
+    newGuest = (node_t *)malloc(sizeof(node_t));
+
+    strcpy(newGuest->fName, "fName4");
+    strcpy(newGuest->lName, "lName4");
+    newGuest->isConcession = true;
+    newGuest->hasPaid = false;
+    newGuest->amountPaid = 0.00f;
+    newGuest->next = NULL;
+    head = addGuestToHead(head, newGuest);
+
+    newGuest = (node_t *)malloc(sizeof(node_t));
+
+    strcpy(newGuest->fName, "fName5");
+    strcpy(newGuest->lName, "lName5");
+    newGuest->isConcession = false;
+    newGuest->hasPaid = true;
+    newGuest->amountPaid = newGuest->isConcession ? concessionPrice : standardPrice;
+    newGuest->next = NULL;
+    head = addGuestToHead(head, newGuest);
+
+    newGuest = (node_t *)malloc(sizeof(node_t));
+
+    strcpy(newGuest->fName, "fName6");
+    strcpy(newGuest->lName, "lName6");
+    newGuest->isConcession = true;
+    newGuest->hasPaid = true;
+    newGuest->amountPaid = newGuest->isConcession ? concessionPrice : standardPrice;
+    newGuest->next = NULL;
+    head = addGuestToHead(head, newGuest);
+
+    return head;
+}
