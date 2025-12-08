@@ -119,3 +119,65 @@ node_t *addGuestToHead(node_t *head, node_t *tmp)
     tmp->next = head;
     return tmp;
 }
+
+node_t *deleteGuest(node_t *head)
+{
+    if (head == NULL)
+    {
+        printf("\nNo Guests in the list.\n");
+        return head;
+    }
+
+    node_t *tmp = head;
+    node_t *prev = NULL;
+    char fName[50] = {0};
+    char lName[50] = {0};
+    int idx = 0;
+    char c;
+
+    printf("\nGuest's first name: ");
+    if (scanf("%49s", fName) != 1)
+    {
+        while ((c = getchar()) != '\n' && c != EOF)
+            ;
+        return head;
+    }
+
+    printf("\nGuest's last name: ");
+    if (scanf("%49s", lName) != 1)
+    {
+        while ((c = getchar()) != '\n' && c != EOF)
+            ;
+        return head;
+    }
+
+    while (tmp != NULL)
+    {
+        if (strcmp(tmp->fName, fName) == 0 && strcmp(tmp->lName, lName) == 0)
+        {
+            printf("\nGuest found...\n");
+            if (idx == 0)
+            {
+                head = head->next;
+                free(tmp);
+                printf("Guest Deleted.\n");
+                break;
+            }
+            else
+            {
+                prev->next = tmp->next;
+                free(tmp);
+                printf("Guest Deleted.\n");
+                break;
+            }
+        }
+        prev = tmp;
+        tmp = tmp->next;
+        idx++;
+    }
+
+    if (tmp == NULL)
+        printf("\nGuest not found.\n");
+
+    return head;
+}

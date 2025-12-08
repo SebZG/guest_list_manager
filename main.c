@@ -69,6 +69,7 @@ int main(void)
     while (1)
     {
         printf("\n'%d' to: Add a guest", MENU_ADD_GUEST);
+        printf("\n'%d' to: Delete a guest", MENU_DELETE_GUEST);
         printf("\n'%d' to: Quit\n", MENU_QUIT);
 
         int userSelect;
@@ -85,6 +86,9 @@ int main(void)
         case MENU_ADD_GUEST:
             tmp = createGuest(standardPrice, concessionPrice);
             head = addGuestToHead(head, tmp);
+            break;
+        case MENU_DELETE_GUEST:
+            head = deleteGuest(head);
             break;
         case MENU_QUIT:
             while (head)
