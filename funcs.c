@@ -181,3 +181,40 @@ node_t *deleteGuest(node_t *head)
 
     return head;
 }
+
+void printStats(node_t *head, float standardPrice, float concessionPrice)
+{
+    node_t *tmp = head;
+
+    int totalGuests = 0;
+    float totalPaid = 0;
+    float totalOwed = 0;
+
+    if (tmp == NULL)
+    {
+        printf("\nNo guests in the list.\n");
+        return;
+    }
+
+    while (tmp != NULL)
+    {
+        totalGuests++;
+
+        if (!tmp->hasPaid)
+            if (tmp->isConcession)
+                totalOwed += concessionPrice;
+            else
+                totalOwed += standardPrice;
+        else
+            totalPaid += tmp->amountPaid;
+
+        tmp = tmp->next;
+    }
+
+    printf("\n--------------------------------\n");
+    printf("Total GUESTS:   %15d\n", totalGuests);
+    printf("Total OWED:     %15.2f\n", totalOwed);
+    printf("Total PAID:     %15.2f\n", totalPaid);
+    printf("Total EXPECTED: %15.2f\n", totalPaid + totalOwed);
+    printf("--------------------------------\n");
+}

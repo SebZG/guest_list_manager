@@ -70,6 +70,7 @@ int main(void)
     {
         printf("\n'%d' to: Add a guest", MENU_ADD_GUEST);
         printf("\n'%d' to: Delete a guest", MENU_DELETE_GUEST);
+        printf("\n'%d' to: Print stats", MENU_PRINT_STATS);
         printf("\n'%d' to: Quit\n", MENU_QUIT);
 
         int userSelect;
@@ -89,6 +90,9 @@ int main(void)
             break;
         case MENU_DELETE_GUEST:
             head = deleteGuest(head);
+            break;
+        case MENU_PRINT_STATS:
+            printStats(head, standardPrice, concessionPrice);
             break;
         case MENU_QUIT:
             while (head)
