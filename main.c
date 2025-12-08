@@ -4,16 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef enum MenuOption
-{
-    MENU_ADD_GUEST = 1,
-    MENU_DELETE_GUEST = 2,
-    MENU_PRINT_STATS = 3,
-    MENU_PRINT_ALL = 4,
-    MENU_AUTO_POPULATE = 5,
-    MENU_QUIT = 6
-} MenuOption;
-
 int main(void)
 {
     node_t *tmp = NULL;
@@ -69,6 +59,7 @@ int main(void)
     while (1)
     {
         printf("\n'%d' to: Add a guest", MENU_ADD_GUEST);
+        printf("\n'%d' to: Update a guest", MENU_UPDATE_GUEST);
         printf("\n'%d' to: Delete a guest", MENU_DELETE_GUEST);
         printf("\n'%d' to: Print stats", MENU_PRINT_STATS);
         printf("\n'%d' to: Print guests & stats", MENU_PRINT_ALL);
@@ -90,8 +81,11 @@ int main(void)
             tmp = createGuest(standardPrice, concessionPrice);
             head = addGuestToHead(head, tmp);
             break;
+        case MENU_UPDATE_GUEST:
+            head = op(updateGuest, head, standardPrice, concessionPrice);
+            break;
         case MENU_DELETE_GUEST:
-            head = deleteGuest(head);
+            head = op(deleteGuest, head, standardPrice, concessionPrice);
             break;
         case MENU_PRINT_STATS:
             printStats(head, standardPrice, concessionPrice);
@@ -103,6 +97,7 @@ int main(void)
             head = autoPopList(head, standardPrice, concessionPrice);
             break;
         case MENU_QUIT:
+            printf("\nQuitting program...\n");
             while (head)
             {
                 node_t *tmp = head;

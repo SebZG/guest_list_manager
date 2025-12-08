@@ -120,36 +120,168 @@ node_t *addGuestToHead(node_t *head, node_t *tmp)
     return tmp;
 }
 
-node_t *deleteGuest(node_t *head)
+node_t *updateGuest(node_t *head, char *fName, char *lName, float standardPrice, float concessionPrice)
 {
-    if (head == NULL)
+    node_t *tmp = head;
+
+    char c;
+    char input[10];
+
+    while (tmp != NULL)
     {
-        printf("\nNo Guests in the list.\n");
-        return head;
+        if (strcmp(tmp->fName, fName) == 0 && strcmp(tmp->lName, lName) == 0)
+        {
+            printf("\nGuest found.\n");
+            while (1)
+            {
+                printf("\n'%d' to: update first name", UPDATE_FNAME);
+                printf("\n'%d' to: update last name", UPDATE_LNAME);
+                printf("\n'%d' to: update is concession", UPDATE_CONCESSION);
+                printf("\n'%d' to: update has paid", UPDATE_PAID);
+                printf("\n'%d' to: quit to main menu\n", UPDATE_QUIT);
+
+                int userSelect;
+                if (scanf("%d", &userSelect) != 1)
+                {
+                    printf("Please enter a number.\n");
+                    while ((c = getchar()) != '\n' && c != EOF)
+                        ;
+                    continue;
+                }
+                while ((c = getchar()) != '\n' && c != EOF)
+                    ;
+
+                switch (userSelect)
+                {
+                case UPDATE_FNAME:
+                    printf("\nFirst name: ");
+                    if (scanf("%49s", tmp->fName) != 1)
+                    {
+                        printf("Error reading input.\n");
+                        while ((c = getchar()) != '\n' && c != EOF)
+                            ;
+                    }
+                    else
+                    {
+                        while ((c = getchar()) != '\n' && c != EOF)
+                            ;
+                        printf("First name updated.\n");
+                    }
+                    break;
+                case UPDATE_LNAME:
+                    printf("\nLast name: ");
+                    if (scanf("%49s", tmp->lName) != 1)
+                    {
+                        printf("Error reading input.\n");
+                        while ((c = getchar()) != '\n' && c != EOF)
+                            ;
+                    }
+                    else
+                    {
+                        while ((c = getchar()) != '\n' && c != EOF)
+                            ;
+                        printf("Last name updated.\n");
+                    }
+                    break;
+                case UPDATE_CONCESSION:
+                    printf("\nIs concession (true/false): ");
+                    if (scanf("%9s", input) != 1)
+                    {
+                        printf("Error reading input.\n");
+                        while ((c = getchar()) != '\n' && c != EOF)
+                            ;
+                    }
+                    else
+                    {
+                        while ((c = getchar()) != '\n' && c != EOF)
+                            ;
+                        if (strcmp(input, "true") == 0)
+                        {
+                            tmp->isConcession = true;
+                            // If they've already paid, update the amount
+                            if (tmp->hasPaid)
+                            {
+                                tmp->amountPaid = concessionPrice;
+                                printf("Concession status updated. Amount adjusted to: %.2f\n", tmp->amountPaid);
+                            }
+                            else
+                            {
+                                printf("Concession status updated.\n");
+                            }
+                        }
+                        else if (strcmp(input, "false") == 0)
+                        {
+                            tmp->isConcession = false;
+                            // If they've already paid, update the amount
+                            if (tmp->hasPaid)
+                            {
+                                tmp->amountPaid = standardPrice;
+                                printf("Concession status updated. Amount adjusted to: %.2f\n", tmp->amountPaid);
+                            }
+                            else
+                            {
+                                printf("Concession status updated.\n");
+                            }
+                        }
+                        else
+                            printf("Invalid input. Keeping current value.\n");
+                    }
+                    break;
+                case UPDATE_PAID:
+                    printf("\nHas paid (true/false): ");
+                    if (scanf("%9s", input) != 1)
+                    {
+                        printf("Error reading input.\n");
+                        while ((c = getchar()) != '\n' && c != EOF)
+                            ;
+                    }
+                    else
+                    {
+                        while ((c = getchar()) != '\n' && c != EOF)
+                            ;
+                        if (strcmp(input, "true") == 0)
+                        {
+                            tmp->hasPaid = true;
+                            // Update amount based on concession status
+                            if (tmp->isConcession)
+                                tmp->amountPaid = concessionPrice;
+                            else
+                                tmp->amountPaid = standardPrice;
+                            printf("Payment status updated. Amount: %.2f\n", tmp->amountPaid);
+                        }
+                        else if (strcmp(input, "false") == 0)
+                        {
+                            tmp->hasPaid = false;
+                            tmp->amountPaid = 0.0f;
+                            printf("Payment status updated. Amount: %.2f\n", tmp->amountPaid);
+                        }
+                        else
+                            printf("Invalid input. Keeping current value.\n");
+                    }
+                    break;
+                case UPDATE_QUIT:
+                    printf("Returning to main menu...\n");
+                    return head;
+                default:
+                    printf("\nInvalid Selection.\n");
+                }
+            }
+        }
+
+        tmp = tmp->next;
     }
 
+    if (tmp == NULL)
+        printf("\nGuest not found.\n");
+
+    return head;
+}
+
+node_t *deleteGuest(node_t *head, char *fName, char *lName, float standardPrice, float concessionPrice)
+{
     node_t *tmp = head;
     node_t *prev = NULL;
-    char fName[50] = {0};
-    char lName[50] = {0};
     int idx = 0;
-    char c;
-
-    printf("\nGuest's first name: ");
-    if (scanf("%49s", fName) != 1)
-    {
-        while ((c = getchar()) != '\n' && c != EOF)
-            ;
-        return head;
-    }
-
-    printf("\nGuest's last name: ");
-    if (scanf("%49s", lName) != 1)
-    {
-        while ((c = getchar()) != '\n' && c != EOF)
-            ;
-        return head;
-    }
 
     while (tmp != NULL)
     {
@@ -180,6 +312,44 @@ node_t *deleteGuest(node_t *head)
         printf("\nGuest not found.\n");
 
     return head;
+}
+
+node_t *op(node_t *(*action)(node_t *, char *, char *, float, float),
+           node_t *head,
+           float standardPrice,
+           float concessionPrice)
+{
+    if (head == NULL)
+    {
+        printf("\nNo Guests in the list.\n");
+        return head;
+    }
+
+    char fName[50] = {0};
+    char lName[50] = {0};
+    char c;
+
+    printf("\nGuest's first name: ");
+    if (scanf("%49s", fName) != 1)
+    {
+        while ((c = getchar()) != '\n' && c != EOF)
+            ;
+        return head;
+    }
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+
+    printf("\nGuest's last name: ");
+    if (scanf("%49s", lName) != 1)
+    {
+        while ((c = getchar()) != '\n' && c != EOF)
+            ;
+        return head;
+    }
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+
+    return action(head, fName, lName, standardPrice, concessionPrice);
 }
 
 void printStats(node_t *head, float standardPrice, float concessionPrice)
