@@ -19,9 +19,10 @@ typedef enum MenuOption
     MENU_UPDATE_GUEST = 2,
     MENU_DELETE_GUEST = 3,
     MENU_PRINT_STATS = 4,
-    MENU_PRINT_ALL = 5,
-    MENU_AUTO_POPULATE = 6,
-    MENU_QUIT = 7
+    MENU_PRINT_GUESTS = 5,
+    MENU_PRINT_ALL = 6,
+    MENU_AUTO_POPULATE = 7,
+    MENU_QUIT = 8
 } MenuOption;
 
 typedef enum UpdateGuest
@@ -42,6 +43,7 @@ node_t *op(node_t *(*action)(node_t *, char *, char *, float, float),
            float standardPrice,
            float concessionPrice);
 void printStats(node_t *head, float standardPrice, float concessionPrice);
+void printGuests(node_t *head, float standardPrice, float concessionPrice);
 void printAllData(node_t *head, float standardPrice, float concessionPrice);
 node_t *autoPopList(node_t *head, float standardPrice, float concessionPrice);
 

@@ -14,7 +14,7 @@ node_t *createGuest(float standardPrice, float concessionPrice)
     float amountPaid = 0.00f;
 
     char inputTmp[10] = {0};
-    char c;
+    int c;
 
     node_t *newGuest = (node_t *)malloc(sizeof(node_t));
     if (!newGuest)
@@ -124,7 +124,7 @@ node_t *updateGuest(node_t *head, char *fName, char *lName, float standardPrice,
 {
     node_t *tmp = head;
 
-    char c;
+    int c;
     char input[10];
 
     while (tmp != NULL)
@@ -282,12 +282,22 @@ node_t *deleteGuest(node_t *head, char *fName, char *lName, float standardPrice,
     node_t *tmp = head;
     node_t *prev = NULL;
     int idx = 0;
+    // int c;
+
+    char *isTrue = "true";
+    char *isFalse = "false";
 
     while (tmp != NULL)
     {
         if (strcmp(tmp->fName, fName) == 0 && strcmp(tmp->lName, lName) == 0)
         {
-            printf("\nGuest found...\n");
+            printf("\nFirst name:     %15s", tmp->fName);
+            printf("\nLast name:      %15s", tmp->lName);
+            printf("\nIs concession:  %15s", tmp->isConcession ? isTrue : isFalse);
+            printf("\nHas paid:       %15s", tmp->hasPaid ? isTrue : isFalse);
+            printf("\nAmount paid:    %15.2f\n", tmp->amountPaid);
+
+            // Perform deletion
             if (idx == 0)
             {
                 head = head->next;
@@ -295,13 +305,11 @@ node_t *deleteGuest(node_t *head, char *fName, char *lName, float standardPrice,
                 printf("Guest Deleted.\n");
                 break;
             }
-            else
-            {
-                prev->next = tmp->next;
-                free(tmp);
-                printf("Guest Deleted.\n");
-                break;
-            }
+
+            prev->next = tmp->next;
+            free(tmp);
+            printf("Guest Deleted.\n");
+            break;
         }
         prev = tmp;
         tmp = tmp->next;
@@ -327,7 +335,7 @@ node_t *op(node_t *(*action)(node_t *, char *, char *, float, float),
 
     char fName[50] = {0};
     char lName[50] = {0};
-    char c;
+    int c;
 
     printf("\nGuest's first name: ");
     if (scanf("%49s", fName) != 1)
@@ -355,16 +363,15 @@ node_t *op(node_t *(*action)(node_t *, char *, char *, float, float),
 void printStats(node_t *head, float standardPrice, float concessionPrice)
 {
     node_t *tmp = head;
-
-    int totalGuests = 0;
-    float totalPaid = 0;
-    float totalOwed = 0;
-
     if (tmp == NULL)
     {
         printf("\nNo guests in the list.\n");
         return;
     }
+
+    int totalGuests = 0;
+    float totalPaid = 0;
+    float totalOwed = 0;
 
     while (tmp != NULL)
     {
@@ -389,9 +396,14 @@ void printStats(node_t *head, float standardPrice, float concessionPrice)
     printf("--------------------------------\n");
 }
 
-void printAllData(node_t *head, float standardPrice, float concessionPrice)
+void printGuests(node_t *head, float standardPrice, float concessionPrice)
 {
     node_t *tmp = head;
+    if (tmp == NULL)
+    {
+        printf("\nNo guests in the list.\n");
+        return;
+    }
 
     int totalGuests = 0;
     float totalPaid = 0;
@@ -399,12 +411,6 @@ void printAllData(node_t *head, float standardPrice, float concessionPrice)
 
     char *isTrue = "true";
     char *isFalse = "false";
-
-    if (tmp == NULL)
-    {
-        printf("\nNo guests in the list.\n");
-        return;
-    }
 
     printf("\n--------------------------------");
     while (tmp != NULL)
@@ -435,13 +441,19 @@ void printAllData(node_t *head, float standardPrice, float concessionPrice)
 
         tmp = tmp->next;
     }
+}
 
-    printf("--------------------------------\n");
-    printf("Total GUESTS:   %15d\n", totalGuests);
-    printf("Total OWED:     %15.2f\n", totalOwed);
-    printf("Total PAID:     %15.2f\n", totalPaid);
-    printf("Total EXPECTED: %15.2f\n", totalPaid + totalOwed);
-    printf("--------------------------------\n");
+void printAllData(node_t *head, float standardPrice, float concessionPrice)
+{
+    node_t *tmp = head;
+    if (tmp == NULL)
+    {
+        printf("\nNo guests in the list.\n");
+        return;
+    }
+
+    printGuests(head, standardPrice, concessionPrice);
+    printStats(head, standardPrice, concessionPrice);
 }
 
 node_t *autoPopList(node_t *head, float standardPrice, float concessionPrice)

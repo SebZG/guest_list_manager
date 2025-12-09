@@ -12,7 +12,7 @@ int main(void)
     float standardPrice = 0.00f;
     float concessionPrice = 0.00f;
 
-    char c;
+    int c;
 
     bool validInput = false;
     do
@@ -62,6 +62,7 @@ int main(void)
         printf("\n'%d' to: Update a guest", MENU_UPDATE_GUEST);
         printf("\n'%d' to: Delete a guest", MENU_DELETE_GUEST);
         printf("\n'%d' to: Print stats", MENU_PRINT_STATS);
+        printf("\n'%d' to: Print guests", MENU_PRINT_GUESTS);
         printf("\n'%d' to: Print guests & stats", MENU_PRINT_ALL);
         printf("\n'%d' to: Auto populate list", MENU_AUTO_POPULATE);
         printf("\n'%d' to: Quit\n", MENU_QUIT);
@@ -90,6 +91,9 @@ int main(void)
         case MENU_PRINT_STATS:
             printStats(head, standardPrice, concessionPrice);
             break;
+        case MENU_PRINT_GUESTS:
+            printGuests(head, standardPrice, concessionPrice);
+            break;
         case MENU_PRINT_ALL:
             printAllData(head, standardPrice, concessionPrice);
             break;
@@ -106,7 +110,7 @@ int main(void)
             }
             return 0;
         default:
-            printf("\nInvalid Seleciton.\n");
+            printf("\nInvalid Selection.\n");
         }
     }
 
